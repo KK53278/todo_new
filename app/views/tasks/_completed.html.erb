@@ -1,13 +1,19 @@
 <%= turbo_frame_tag task do %>
 <!--jquery非同期のような機能-->
   <%= form_with model: task, url: toggle_task_path(task) do |f| %>
-  <span>
-    <%= f.check_box :completed, onchange: 'this.form.requestSubmit()' %>
-      <%= task.title %>
-      <%= link_to '[edit]', edit_task_path(task) %>
-      <%= link_to '[destroy]', task_path(task),
-      data: { turbo_method: 'delete', turbo_confirm: 'Are you sure?'} %>
-      <!--turboつけることで高速に処理。rails7から対応-->
-  </span>
+    <li>
+      <span class=" <%= task.completed? ? 'completed' : '' %>">
+        <%= f.check_box :completed,
+        onchange: 'this.form.requestSubmit()' %>
+
+        <%= task.title %>
+        <%= link_to '[edit]', edit_task_path(task), date: { turbo_frame: '_top'} %>
+        <%= link_to '[destroy]', task_path(task),
+        data: { turbo_method: 'delete',
+        turbo_confirm: 'Are you sure?'} %>
+        <!--turboつけることで高速に処理。rails7から対応-->
+      </span>
+    </li>
+
   <% end %>
 <% end %>

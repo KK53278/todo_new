@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+  before_action :set_task, only: [:edit, :update, :destroy, :toggle]
+  # 共通化
 
   def index
     @tasks = Task.all
@@ -18,11 +20,11 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id])
+    # @task = Task.find(params[:id])
   end
 
   def update
-    @task = Task.find(params[:id])
+    # @task = Task.find(params[:id])
     if @task.update(task_params)
       redirect_to root_path
     else
@@ -32,15 +34,15 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = Task.find(params[:id])
+    # @task = Task.find(params[:id])
     @task.destroy
     redirect_to root_path, status: :see_other
     # 303 See Other 確認ページなど別なページにリンクする
   end
-  
+
   # リロードしてもcheck boxの状態が保持される
   def toggle
-    @task = Task.find(params[:id])
+    # @task = Task.find(params[:id])
     @task.update(completed: !@task.completed)
     render turbo_stream: turbo_stream.replace(
       @task,
@@ -54,5 +56,9 @@ class TasksController < ApplicationController
   def task_params
     params.require(:task).permit(:title)
   end
-  
+
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
 end
